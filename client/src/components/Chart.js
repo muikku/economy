@@ -1,4 +1,4 @@
-import { CardContent, useTheme } from '@mui/material';
+import { CardContent, Container, useMediaQuery, useTheme } from '@mui/material';
 import React from 'react';
 import { Navigate } from 'react-router';
 import {
@@ -9,6 +9,7 @@ import {
   Tooltip,
   Area,
   AreaChart,
+  ResponsiveContainer,
 } from 'recharts';
 import { paths } from '../../misc';
 import DataTable from './Table';
@@ -21,15 +22,18 @@ const keys = {
 const keysArray = Object.values(keys);
 
 const OverviewChart = ({ data }) => {
-  const themeColors = useTheme().palette;
-  const getColor = (color) => themeColors[color].main;
+  const { palette, breakpoints } = useTheme();
+  const sm = useMediaQuery(breakpoints.down('sm'));
+  const md = useMediaQuery(breakpoints.down('md'));
+
+  const getColor = (color) => palette[color].main;
 
   if (!data) return <Navigate to={paths.FRONT.path} />;
 
   return (
-    <div>
-      <CardContent>
-        <AreaChart width={1100} height={500} data={data}>
+    <Container disableGutters={sm}>
+      <ResponsiveContainer width="100%" height={md ? 300 : 500}>
+        <AreaChart data={data}>
           <defs>
             {keysArray.map(({ key, color }) => {
               const stroke = getColor(color);
@@ -44,7 +48,7 @@ const OverviewChart = ({ data }) => {
           </defs>
           <XAxis dataKey="name" />
           <CartesianGrid strokeDasharray="3 3" />
-          <YAxis />
+          {!md && <YAxis />}
           <Tooltip />
           <Legend />
           {keysArray.map(({ key, color }) => {
@@ -62,9 +66,9 @@ const OverviewChart = ({ data }) => {
             );
           })}
         </AreaChart>
-        <DataTable data={data} />
-      </CardContent>
-    </div>
+      </ResponsiveContainer>
+      <DataTable data={data} />
+    </Container>
   );
 };
 

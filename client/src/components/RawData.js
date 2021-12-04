@@ -1,4 +1,9 @@
-import { CardActionArea, CardContent, CardHeader } from '@mui/material';
+import {
+  CardActionArea,
+  CardContent,
+  CardHeader,
+  Container,
+} from '@mui/material';
 import React from 'react';
 import { Navigate } from 'react-router';
 import { paths } from '../../misc';
@@ -17,7 +22,7 @@ const RawData = ({ data }) => {
   };
   if (!data) return <Navigate to={paths.FRONT.path} />;
   return (
-    <>
+    <Container>
       <CardActionArea onClick={handleCopyOnClipboard}>
         <CardHeader
           title="Data in local storage"
@@ -30,7 +35,7 @@ const RawData = ({ data }) => {
         </CardContent>
       </CardActionArea>
       <Notification />
-    </>
+    </Container>
   );
 };
 
