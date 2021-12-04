@@ -12,7 +12,26 @@ const FileUpload = ({ getAndSetData }) => {
     const noFiles = !files?.length >= 1;
     if (noFiles) return;
     const parsed = await parseFiles(files);
-    window.localStorage.setItem(TRANSACTIONS_KEY, JSON.stringify(parsed));
+    const addNewData = () => {
+      const oldDataInStorage = window.localStorage.getItem(TRANSACTIONS_KEY);
+      if (oldDataInStorage == null)
+        return window.localStorage.setItem(
+          TRANSACTIONS_KEY,
+          JSON.stringify(parsed)
+        );
+      const parsedOldData = JSON.parse(oldDataInStorage);
+      const namesInOldData = parsedOldData.map((entry) => entry.name);
+      const merged = parsed.reduce((prev, curr) => {
+        if (namesInOldData.includes(curr.name))
+          return prev.map((entry) => (entry.name === curr.name ? curr : entry));
+        return prev.concat(curr);
+      }, parsedOldData);
+      return window.localStorage.setItem(
+        TRANSACTIONS_KEY,
+        JSON.stringify(merged)
+      );
+    };
+    addNewData();
     getAndSetData();
     navigate('/my-economy');
   };
