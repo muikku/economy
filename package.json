@@ -7,7 +7,7 @@
     "start": "node server.js",
     "dev": "concurrently --kill-others \"nodemon server.js\" \"npm run client\"",
     "client": "npm start --prefix client",
-    "build:ui": "rmdir client/build && cd client && npm run build",
+    "build:ui": "cd client && npm run build",
     "deploy": "git push heroku master",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy"
   },
