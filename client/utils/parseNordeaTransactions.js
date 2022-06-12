@@ -17,7 +17,8 @@ const readFile = (file) => {
 
 const replaceWithCommaAndSplit = (str) => str.replace(/\s/g, '^').split('^');
 
-const accumulate = (value1, value2) => Number((value1 + value2).toFixed(2));
+export const accumulate = (value1, value2) =>
+  Number((value1 + value2).toFixed(2));
 
 const calculateMonths = (file) => {
   const split = file
@@ -92,7 +93,6 @@ const parseFiles = async (filesToUpload) => {
       spending: value.spending * -1,
       amt: index + 1,
     }));
-
     return final;
   } catch (error) {
     console.log(error);
